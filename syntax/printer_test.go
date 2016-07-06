@@ -466,7 +466,10 @@ func TestPrintWeirdFormat(t *testing.T) {
 
 	parser := NewParser(KeepComments)
 	printer := NewPrinter()
+	n := 0
 	for i, tc := range printTests {
+		ioutil.WriteFile(fmt.Sprintf("../corpus/printer-%03d", n), tc.in, 0644)
+		n++
 		t.Run(fmt.Sprintf("%03d", i), func(t *testing.T) {
 			printTest(t, parser, printer, tc.in, tc.want)
 		})
