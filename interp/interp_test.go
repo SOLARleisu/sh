@@ -197,6 +197,12 @@ var fileCases = []struct {
 	{"echo 'a\\\nb'", "a\\\nb\n"},
 	{`echo "\""`, "\"\n"},
 
+	// escaped forward and backward slashes
+	{`echo \/`, "/\n"},
+	{`echo \/\/`, "//\n"},
+	{`echo \\`, "\\\n"},
+	{`echo \\\\`, "\\\\\n"},
+
 	// vars
 	{"foo=bar; echo $foo", "bar\n"},
 	{"foo=bar foo=etc; echo $foo", "etc\n"},
@@ -870,10 +876,12 @@ var fileCases = []struct {
 		"echo foo >/dev/null; echo bar",
 		"bar\n",
 	},
-	{
-		">a; echo foo >>b; wc -c <a >>b; cat b",
-		"foo\n0\n",
-	},
+	// TODO: enable once we fix https://github.com/mvdan/sh/issues/289 on
+	// Windows
+	//{
+	//        ">a; echo foo >>b; wc -c <a >>b; cat b",
+	//        "foo\n0\n",
+	//},
 	{
 		"echo foo >a; wc -c <a",
 		"4\n",
